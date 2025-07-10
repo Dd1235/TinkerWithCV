@@ -74,3 +74,8 @@
 - In a well-disentangled latent space, tweaking a single latent dimension can produce interpretable changes in the output, making the model more useful for understanding underlying generative factors.
 
 - There’s an active research area around evaluating disentanglement, defining metrics for it, and balancing reconstruction quality with interpretability.
+
+# TODO
+
+- [] ViT based encoder
+- [] read [this](https://arxiv.org/abs/2103.04257)
