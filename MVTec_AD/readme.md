@@ -32,6 +32,14 @@ Will also look into more VAE + FSL possibilities.
 - It is similar to the second method, except that it uses a memory bank of patches instead of the entire image features.
 - It gave an AUC of 0.98 and does not have the overhead of training time of autoencoder, simply using pretrained ResNet50.
 
+## Model 5: ViT and KNN
+
+- Used a pre-trained Vision Transformer (ViT) model to extract features.
+- Only used the cls label embedding, to reduce training time.
+- Created a memory bank of features from the training set.
+- Used the k-nearest neighbors (KNN) algorithm to compute the anomaly score.
+- Achieved AUC of 0.95, this is only ViT and KNN, did not use patch embeddings, no autoencoder, entirely trained on CPU because i ran out of gpu free credits, yet it performed well.
+
 ## Methodology: Model 2
 
 The core of the anomaly detection system is built around the idea of a "memory bank" of features from normal (non-anomalous) images.
