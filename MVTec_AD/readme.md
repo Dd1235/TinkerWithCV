@@ -68,13 +68,13 @@ Will also look into more VAE + FSL possibilities.
 
 ## Notebooks
 
-- [EDA & Dataset Download](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/eda.ipynb): Exploratory data analysis, dataset structure, and citation/license details.
-- [Make Dataset](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/make_dataset.ipynb): PyTorch dataset and dataloader creation.
-- [Autoencoder Baseline](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/train_autoencoder.ipynb)
-- [ResNet50 + KNN](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_knn.ipynb)
-- [ResNet50 + Autoencoder](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_backbone.ipynb)
-- [PatchCore](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/patch_core.ipynb)
-- [ViT + KNN](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/vit_knn.ipynb)
+- [EDA & Dataset Download](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/eda.ipynb): Exploratory data analysis, dataset structure, and citation/license details.
+- [Make Dataset](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/make_dataset.ipynb): PyTorch dataset and dataloader creation.
+- [Autoencoder Baseline](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/train_autoencoder.ipynb)
+- [ResNet50 + KNN](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/resnet_knn.ipynb)
+- [ResNet50 + Autoencoder](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/resnet_backbone.ipynb)
+- [PatchCore](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/patch_core.ipynb)
+- [ViT + KNN](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/vit_knn.ipynb)
 
 ---
 
