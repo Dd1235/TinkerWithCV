@@ -82,6 +82,8 @@
 - Think of the difference between the higher resolution vs the input as a residual that is the model better off learning.
 - Residual blocks are ofcourse absolutely essential for other usecases too, just need to make sure that the dimensions batch for element wise addition.
 
+# Distance based Anomaly Detection
+
 # TODO
 
 - [] ViT based encoder
