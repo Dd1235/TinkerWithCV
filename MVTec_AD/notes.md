@@ -75,6 +75,13 @@
 
 - There’s an active research area around evaluating disentanglement, defining metrics for it, and balancing reconstruction quality with interpretability.
 
+# Resnet
+
+- Say the task is to upscale an image, get higher resolution output.
+- A lot of the times, your output starts looking completely bonkers instead of a higher resolution version.
+- Think of the difference between the higher resolution vs the input as a residual that is the model better off learning.
+- Residual blocks are ofcourse absolutely essential for other usecases too, just need to make sure that the dimensions batch for element wise addition.
+
 # TODO
 
 - [] ViT based encoder
