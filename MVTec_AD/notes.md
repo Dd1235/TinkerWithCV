@@ -84,6 +84,20 @@
 
 # Distance based Anomaly Detection
 
+eg, K = 3, take 3 nearest samples, anomaly score = mean(distance to K nearest neighbors)
+
+- Say normal image (3, 224, 224)
+- Use pretrained resnet-50 model, throw away last layer, and use the 2048 dimensional feature vector
+- eg (100,3,224,224)
+- so we get (100, 2048) feature vectors - memory bank
+- Get the std of each feature, sort according to standard deviation in the memory bank, and choose to ignore the columns iwth low predictive power
+- so (100, 500)
+- In Patch core, we use KNN not on entire image, but based on the patches.
+- So patch comparison
+- Use all but the last layer of the resnet model
+- Visualize the embeddings projecting on to a 2D place using t-SNE
+-
+
 # TODO
 
 - [] ViT based encoder
