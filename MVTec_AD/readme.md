@@ -25,30 +25,33 @@ If you use the dataset, please cite:
 
 ### 1. Autoencoder Baseline
 
-- **Notebook:** [train_autoencoder.ipynb](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/train_autoencoder.ipynb)
+- **Notebook:** [train_autoencoder.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/train_autoencoder.ipynb)
 - **Summary:** Trains a simple convolutional autoencoder directly on image pixels. The model learns to reconstruct normal images; reconstruction error (L2 loss) is used as the anomaly score. **Reconstruction loss heatmaps** are used to visualize where the model detects anomalies.
 - **Result:** AUC ≈ 0.44 (worse than random). Demonstrates the limitations of pixel-space autoencoders for complex textures.
 
 ### 2. ResNet50 + KNN (Feature Memory Bank)
 
-- **Notebook:** [resnet_knn.ipynb](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_knn.ipynb)
+- **Notebook:** [resnet_knn.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/resnet_knn.ipynb)
 - **Summary:** Uses a pre-trained ResNet50 as a feature extractor. Features from normal ("good") training images are stored in a memory bank. For a test image, features are extracted and compared to the memory bank using K-nearest neighbors (KNN); the mean distance to the k closest features is the anomaly score. **Thresholding (mean + 2*std)** is used to classify anomalies. **t-SNE plots** are used to visualize feature separability.
 - **Result:** AUC ≈ 0.74. Shows the power of deep features and simple non-parametric scoring.
 
 ## Model 3: Resnet backbone with autoencoder
 
-- Trained the ResNet50 model as a feature extractor and then used an autoencoder to reconstruct the features.
+- Notebook: [resnet_backbone.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/resnet_backbone.ipynb)
+- the ResNet50 model as a feature extractor and then used an autoencoder to reconstruct the features.
 - This approach gave an AUC of 0.99, but the autoencoder takes training time.
 - This method is also from a paper.
 
 ## Model 4: PatchCore
 
+- Notebook: [patch_core.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/patch_core.ipynb)
 - A simplified implementation of PatchCore, as described [here](https://arxiv.org/abs/2106.08265)
 - It is similar to the second method, except that it uses a memory bank of patches instead of the entire image features.
 - It gave an AUC of 0.98 and does not have the overhead of training time of autoencoder, simply using pretrained ResNet50.
 
 ## Model 5: ViT and KNN
 
+- Notebook: [vit_knn.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/vit_knn.ipynb)
 - Used a pre-trained Vision Transformer (ViT) model to extract features.
 - Only used the cls label embedding, to reduce training time.
 - Created a memory bank of features from the training set.
