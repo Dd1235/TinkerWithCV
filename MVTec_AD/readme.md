@@ -1,30 +1,45 @@
-# Anomaly Detection on MVTec AD Dataset
+# Anomaly Detection on MVTec AD (Carpet)
 
-This repository contains a collection of Jupyter notebooks that explore anomaly detection on the MVTec AD (Carpet) dataset.
+This repository explores methods for unsupervised anomaly detection on the MVTec AD dataset, focusing on the 'carpet' class. The project demonstrates a progression from simple autoencoders to advanced feature-based and transformer-based approaches, with clear visualizations and benchmarking.
 
-Work in Progress, looking into adding model that use Vision Transformer for feature extraction, etc.
-Also looking to expand from carpets to other classes as well, and deploy model for small demo.
+---
 
-I also want to look into feature extractor backbone + VAE instead. I might perform better for generalized usecases where we can get image from different angles, and offsets etc.
 
-Will also look into more VAE + FSL possibilities.
+## Dataset
 
-## Model 1: autoencoder
+We use the [MVTec Anomaly Detection (MVTec AD)](https://www.mvtec.com/company/research/datasets/mvtec-ad) dataset, a real-world benchmark for unsupervised anomaly detection. This project focuses on the 'carpet' class, which contains high-resolution images of carpets with various types of defects (color, cut, hole, metal contamination, thread) and normal samples.
 
-- Trained a simple autoencoder model, did not use a feature extractor.
-- It performed worse than random classifier, with an AUC score of 0.44.
+**Citation:**
 
-## Model 2: Resnet and KNN
+If you use the dataset, please cite:
 
-- Used a pre-trained ResNet50 backbone to extract the feature maps.
-- Created a memory bank like in the Patch-core paper to store the features of the training images.
-- Used the k-nearest neighbors (KNN) algorithm to compute the anomaly score.
-- Achieved an AUC score of approximately 0.74, which is significantly better than the autoencoder approach.
+> Paul Bergmann, Michael Fauser, David Sattlegger, and Carsten Steger,
+> "A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection",
+> IEEE Conference on Computer Vision and Pattern Recognition, 2019
+
+**License:** Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International ([details](http://creativecommons.org/licenses/by-nc-sa/4.0/)).
+
+---
+
+## Methodologies
+
+### 1. Autoencoder Baseline
+
+- **Notebook:** [train_autoencoder.ipynb](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/train_autoencoder.ipynb)
+- **Summary:** Trains a simple convolutional autoencoder directly on image pixels. The model learns to reconstruct normal images; reconstruction error (L2 loss) is used as the anomaly score. **Reconstruction loss heatmaps** are used to visualize where the model detects anomalies.
+- **Result:** AUC ≈ 0.44 (worse than random). Demonstrates the limitations of pixel-space autoencoders for complex textures.
+
+### 2. ResNet50 + KNN (Feature Memory Bank)
+
+- **Notebook:** [resnet_knn.ipynb](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_knn.ipynb)
+- **Summary:** Uses a pre-trained ResNet50 as a feature extractor. Features from normal ("good") training images are stored in a memory bank. For a test image, features are extracted and compared to the memory bank using K-nearest neighbors (KNN); the mean distance to the k closest features is the anomaly score. **Thresholding (mean + 2*std)** is used to classify anomalies. **t-SNE plots** are used to visualize feature separability.
+- **Result:** AUC ≈ 0.74. Shows the power of deep features and simple non-parametric scoring.
 
 ## Model 3: Resnet backbone with autoencoder
 
 - Trained the ResNet50 model as a feature extractor and then used an autoencoder to reconstruct the features.
 - This approach gave an AUC of 0.99, but the autoencoder takes training time.
+- This method is also from a paper.
 
 ## Model 4: PatchCore
 
@@ -40,25 +55,48 @@ Will also look into more VAE + FSL possibilities.
 - Used the k-nearest neighbors (KNN) algorithm to compute the anomaly score.
 - Achieved AUC of 0.95, this is only ViT and KNN, did not use patch embeddings, no autoencoder, entirely trained on CPU because i ran out of gpu free credits, yet it performed well.
 
-## Methodology: Model 2
+Plans:
 
-The core of the anomaly detection system is built around the idea of a "memory bank" of features from normal (non-anomalous) images.
+Also looking to expand from carpets to other classes as well, and deploy model for small demo.
 
-1.  **Feature Extraction**: A pre-trained ResNet50 model is used as a feature extractor. The final classification layer is removed, and the model is used to generate feature vectors for each image.
+I also want to look into feature extractor backbone + VAE instead. I might perform better for generalized usecases where we can get image from different angles, and offsets etc.
 
-2.  **Memory Bank Creation**: A "memory bank" is created by extracting features from all the images in the **training set**, which consists only of "good" (non-anomalous) images. This memory bank represents the normal state of the data.
-
-3.  **Feature Selection**: To reduce dimensionality and focus on the most informative features, the standard deviation of each feature across the memory bank is calculated. The top 500 features with the highest standard deviation are selected for the final memory bank.
-
-4.  **Anomaly Scoring**: For each test image, its features are extracted using the same ResNet model. The anomaly score is then calculated as the mean Euclidean distance between the test image's feature vector and the `k` nearest neighbors in the memory bank (in this case, `k=50`).
-
-5.  **Thresholding**: A threshold for anomaly detection is determined by taking the mean of the reconstruction errors of the training data plus three standard deviations. Any test image with a score above this threshold is classified as an anomaly.
+Will also look into more VAE + FSL possibilities.
 
 ## Notebooks
 
-- `MVTec_AD/resnet_knn.ipynb`: The main notebook implementing the feature-based anomaly detection method described above.
-- `MVTec_AD/eda.ipynb`: Performs exploratory data analysis on the MVTec AD dataset.
-- `MVTec_AD/make_dataset.ipynb`: Contains code for creating PyTorch datasets and dataloaders.
-- `MVTec_AD/train_autoencoder.ipynb`: An approach using an autoencoder for anomaly detection. This uses the raw data, and trains a simple custom autoencoder on it.
-- `MVTec_AD/resnet_backbone.ipynb`: An approach using a ResNet backbone as a feature extractor, followed by an autoencoder for reconstruction.
-- `MVTec_AD/patchcore.ipynb`: A simplified implementation of the PatchCore method for anomaly detection.
+- [EDA & Dataset Download](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/eda.ipynb): Exploratory data analysis, dataset structure, and citation/license details.
+- [Make Dataset](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/make_dataset.ipynb): PyTorch dataset and dataloader creation.
+- [Autoencoder Baseline](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/train_autoencoder.ipynb)
+- [ResNet50 + KNN](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_knn.ipynb)
+- [ResNet50 + Autoencoder](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/resnet_backbone.ipynb)
+- [PatchCore](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/patch_core.ipynb)
+- [ViT + KNN](https://github.com/Dd1235/TinkerWithCV/MVTec_AD/vit_knn.ipynb)
+
+---
+
+## Skills & Tools
+
+- **Deep Learning:** PyTorch, torchvision, transformers
+- **Computer Vision:** Feature extraction, autoencoders, memory banks, anomaly detection
+- **Visualization:** Matplotlib, seaborn, t-SNE, heatmaps
+- **Experimentation:** Jupyter Notebooks, Colab, Implementing papers, and also implementing my own ideas using the papers, like using Vision Transformer backbone instead of ResNet50 etc.
+- **Reproducibility:** Dataset download, preprocessing, and clear notebook structure
+
+---
+
+## References
+
+- MVTec AD Dataset: Paul Bergmann, Michael Fauser, David Sattlegger, and Carsten Steger, "A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection", CVPR 2019. [[project page](https://www.mvtec.com/company/research/datasets/mvtec-ad)]
+- PatchCore: Neumann, Lukas, et al. "PatchCore: Towards Total Recall in Industrial Anomaly Detection." CVPR 2021. [[arXiv](https://arxiv.org/abs/2106.08265)]
+- [Towards Total Recall in Industrial Anomaly Detection (PatchCore)](https://arxiv.org/abs/2106.08265)
+
+---
+
+## Future Work
+
+- Expand to other MVTec AD classes beyond carpets.
+- Deploy a demo for real-time anomaly detection.
+- Explore feature extractor backbones with variational autoencoders (VAE) and few-shot learning (FSL) approaches.
+
+<style>#mermaid-1752251928590{font-family:"trebuchet ms",verdana,arial;font-size:16px;fill:#ccc;}#mermaid-1752251928590 .error-icon{fill:#a44141;}#mermaid-1752251928590 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1752251928590 .edge-thickness-normal{stroke-width:2px;}#mermaid-1752251928590 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1752251928590 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1752251928590 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1752251928590 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1752251928590 .marker{fill:lightgrey;}#mermaid-1752251928590 .marker.cross{stroke:lightgrey;}#mermaid-1752251928590 svg{font-family:"trebuchet ms",verdana,arial;font-size:16px;}#mermaid-1752251928590 .label{font-family:"trebuchet ms",verdana,arial;color:#ccc;}#mermaid-1752251928590 .label text{fill:#ccc;}#mermaid-1752251928590 .node rect,#mermaid-1752251928590 .node circle,#mermaid-1752251928590 .node ellipse,#mermaid-1752251928590 .node polygon,#mermaid-1752251928590 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1752251928590 .node .label{text-align:center;}#mermaid-1752251928590 .node.clickable{cursor:pointer;}#mermaid-1752251928590 .arrowheadPath{fill:lightgrey;}#mermaid-1752251928590 .edgePath .path{stroke:lightgrey;stroke-width:1.5px;}#mermaid-1752251928590 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1752251928590 .edgeLabel{background-color:hsl(0,0%,34.4117647059%);text-align:center;}#mermaid-1752251928590 .edgeLabel rect{opacity:0.5;background-color:hsl(0,0%,34.4117647059%);fill:hsl(0,0%,34.4117647059%);}#mermaid-1752251928590 .cluster rect{fill:hsl(180,1.5873015873%,28.3529411765%);stroke:rgba(255,255,255,0.25);stroke-width:1px;}#mermaid-1752251928590 .cluster text{fill:#F9FFFE;}#mermaid-1752251928590 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial;font-size:12px;background:hsl(20,1.5873015873%,12.3529411765%);border:1px solid rgba(255,255,255,0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1752251928590:root{--mermaid-font-family:sans-serif;}#mermaid-1752251928590:root{--mermaid-alt-font-family:sans-serif;}#mermaid-1752251928590 flowchart{fill:apa;}</style>
