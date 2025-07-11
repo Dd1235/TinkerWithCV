@@ -1,0 +1,2 @@
+- cnn with encoder decoder architecture
+- Connecting paths, decoded features might include more semantic information while the encoder features are more spatially aware.
