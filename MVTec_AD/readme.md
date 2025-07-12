@@ -8,6 +8,28 @@ This repository explores methods for unsupervised anomaly detection on the MVTec
 
 We use the [MVTec Anomaly Detection (MVTec AD)](https://www.mvtec.com/company/research/datasets/mvtec-ad) dataset, a real-world benchmark for unsupervised anomaly detection. This project focuses on the 'carpet' class, which contains high-resolution images of carpets with various types of defects (color, cut, hole, metal contamination, thread) and normal samples.
 
+Some sample images from the notebooks(they contain much more visualization):
+In test/ we have the defective images, and in ground truth/ you have respective segmentation masks. By mistakes this plot did not account for grayscale mask instead of RGB, but the mask is stil correct albeit viridis.
+![first image](assets/img1.png)
+
+Scaled images
+![second image](assets/img2.png)
+
+Reconstruction loss heatmap for autoencoder approach
+![third image](assets/img3.png)
+
+2D t-SNE plot of ResNet50 features
+![fourth image](assets/img4.png)
+
+Resnet with autoencoder reconstruction loss heatmap sample
+![fifth image](assets/img5.png)
+
+Anamoly score distribution for PatchCore
+![sixth image](assets/img6.png)
+
+Anamoly score distribution for ViT + KNN
+![seventh image](assets/img7.png)
+
 ---
 
 ## Methodologies
