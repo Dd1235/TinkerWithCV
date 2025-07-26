@@ -69,6 +69,14 @@ Anamoly score distribution for ViT + KNN
 - Used the k-nearest neighbors (KNN) algorithm to compute the anomaly score.
 - Achieved AUC of 0.95, this is only ViT and KNN, did not use patch embeddings, no autoencoder, entirely trained on CPU because i ran out of gpu free credits, yet it performed well.
 
+## Model 6 and 7: Pixel space autoencoder with skip connections (with MSE loss and SSIM loss)
+
+- Notebook: [skipae.ipynb](https://github.com/Dd1235/TinkerWithCV/blob/main/MVTec_AD/models/skipae.ipynb)
+- First I made a ae model but used symmetrical skip connections to reconstruct the image.
+- It was trained on just the good images, and then used to reconstruct.
+- The reconstruction is pretty good, good enough that even faulty images are reconstructed well, This has the lowest AUC at 0.41, worse than normal autoencoder.
+- I also tried using SSIM loss instead of MSE, it significantly improved this model to 0.56 AUC, same model, same epochs, just different loss metric. Still pretty bad performance, as expected of pixel space autoencoders.
+
 Plans:
 
 Also looking to expand from carpets to other classes as well, and deploy model for small demo.
